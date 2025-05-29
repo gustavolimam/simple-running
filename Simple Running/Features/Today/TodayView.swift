@@ -25,13 +25,13 @@ struct TodayView: View {
             }
             .navigationTitle("Treino de Hoje")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        showingAddWorkoutSheet = true
-                    } label: {
-                        Label("Adicionar Treino", systemImage: "plus.circle.fill")
-                    }
-                }
+//                ToolbarItem(placement: .navigationBarTrailing) {
+//                    Button {
+//                        showingAddWorkoutSheet = true
+//                    } label: {
+//                        Label("Adicionar Treino", systemImage: "plus.circle.fill")
+//                    }
+//                }
                 ToolbarItem(placement: .navigationBarLeading) {
                     if store.isLoading {
                         ProgressView()

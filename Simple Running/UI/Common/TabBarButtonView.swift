@@ -42,7 +42,7 @@ struct TabBarButtonView_Previews: PreviewProvider {
             HStack {
                 TabBarButtonView(tabItem: .today, selectedTab: selection, action: { selection.wrappedValue = .today })
                 TabBarButtonView(tabItem: .calendar, selectedTab: selection, action: { selection.wrappedValue = .calendar })
-                TabBarButtonView(tabItem: .add, selectedTab: selection, action: { selection.wrappedValue = .add })
+//                TabBarButtonView(tabItem: .add, selectedTab: selection, action: { selection.wrappedValue = .add })
             }
             .padding()
             .background(Color.gray.opacity(0.2))

@@ -109,11 +109,12 @@
 				};
 			};
 			buildConfigurationList = 4CF3F1F82DD4DAB80063908E /* Build configuration list for PBXProject "Simple Running" */;
-			developmentRegion = en;
+			developmentRegion = "pt-BR";
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				"pt-BR",
 			);
 			mainGroup = 4CF3F1F42DD4DAB80063908E;
 			minimizedProjectReferenceProxies = 1;
@@ -300,7 +301,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "gustavomonteiro.Simple-Running";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -331,7 +332,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "gustavomonteiro.Simple-Running";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

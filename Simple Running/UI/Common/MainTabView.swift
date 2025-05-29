@@ -10,12 +10,12 @@ import SwiftUI
 struct MainTabView<Content: View>: View {
     @Binding var selectedTab: TabItem
     let content: (TabItem) -> Content
-
+    
     init(selectedTab: Binding<TabItem>, @ViewBuilder content: @escaping (TabItem) -> Content) {
         self._selectedTab = selectedTab
         self.content = content
     }
-
+    
     var body: some View {
         ZStack {
             Group {
@@ -23,7 +23,7 @@ struct MainTabView<Content: View>: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(.systemBackground).ignoresSafeArea())
-
+            
             VStack {
                 Spacer()
                 customTabBar
@@ -34,17 +34,20 @@ struct MainTabView<Content: View>: View {
         )
         .ignoresSafeArea(.keyboard)
     }
-
+    
     private var customTabBar: some View {
         HStack {
-            ForEach(TabItem.allCases, id: \.self) { tab in
+            Spacer(minLength: 0)
+            ForEach(TabItem.allCases.indices, id: \.self) { index in
+                let tab = TabItem.allCases[index]
                 TabBarButtonView(tabItem: tab, selectedTab: $selectedTab) {
                     selectedTab = tab
                 }
-                if tab != TabItem.allCases.last {
-                    Spacer()
+                if index != TabItem.allCases.count - 1 {
+                    Spacer(minLength: 0)
                 }
             }
+            Spacer(minLength: 0)
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 12)
@@ -72,7 +75,7 @@ struct MainTabView_Previews: PreviewProvider {
             }
         }
     }
-
+    
     static var previews: some View {
         StatefulPreviewWrapper(TabItem.today) { selection in
             MainTabView(selectedTab: selection) { tab in

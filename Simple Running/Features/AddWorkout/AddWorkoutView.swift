@@ -88,9 +88,9 @@ struct AddWorkoutView: View {
             } message: {
                 Text(store.errorMessage ?? "Não foi possível salvar o treino.")
             }
-            .background(Color(.systemBackground).ignoresSafeArea()) // Use Color(.systemBackground)
+            .background(Color(.systemBackground).ignoresSafeArea())
         }
-        .navigationViewStyle(.stack) // .stack é o padrão para iOS, mas bom explicitar se necessário
+        .navigationViewStyle(.stack)
     }
 
     private func isSaveButtonDisabled() -> Bool {
@@ -118,7 +118,7 @@ struct AddWorkoutView: View {
             return
         }
 
-        let newWorkout = Workout( // Assegure-se que a struct Workout está definida
+        let newWorkout = Workout(
             date: date,
             description: description.trimmingCharacters(in: .whitespacesAndNewlines),
             type: type,
@@ -136,7 +136,8 @@ struct AddWorkoutView: View {
 }
 
 // Preview
- #Preview { // Usando a nova sintaxe de macro se disponível
+ #Preview {
     AddWorkoutView()
-        .environmentObject(WorkoutStore()) // Assegure-se que WorkoutStore está definido
+        .environmentObject(WorkoutStore())
+        .environment(\.locale, Locale(identifier: "pt_BR"))
  }

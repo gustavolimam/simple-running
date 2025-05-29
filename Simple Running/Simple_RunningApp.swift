@@ -1,18 +1,13 @@
-//
-//  Simple_RunningApp.swift
-//  Simple Running
-//
-//  Created by Gustavo Monteiro on 14/05/25.
-//
-
 import SwiftUI
 
 @main
 struct Simple_RunningApp: App {
+    @StateObject var workoutStore = WorkoutStore()
 
     var body: some Scene {
         WindowGroup {
             ContentView()
-        }        
+                .environmentObject(workoutStore)
+        }
     }
 }

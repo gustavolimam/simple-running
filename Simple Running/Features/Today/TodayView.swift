@@ -6,36 +6,49 @@ struct TodayView: View {
 
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-//                    if let todayWorkout = store.workoutForToday() {
-//                        WorkoutDetailCard(workout: todayWorkout)
-//                    } else {
-                        NoWorkoutView()
-//                    }
-
-                    // Opcional: Próximos treinos
-                    upcomingWorkoutsSection
+            Group {
+                if store.isLoading && store.workouts.isEmpty {
+                    ProgressView("Carregando treinos...")
+                } else {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 20) {
+                            if let todayWorkout = store.workoutForToday() {
+                                WorkoutDetailCard(workout: todayWorkout)
+                            } else {
+                                NoWorkoutView()
+                            }
+                            upcomingWorkoutsSection
+                        }
+                        .padding()
+                    }
                 }
-                .padding()
             }
             .navigationTitle("Treino de Hoje")
-//            .toolbar {
-//                ToolbarItem(placement: .navigationBarTrailing) {
-//                    Button {
-//                        showingAddWorkoutSheet = true
-//                    } label: {
-//                        Label("Adicionar Treino", systemImage: "plus.circle.fill")
-//                    }
-//                }
-//            }
-//            .sheet(isPresented: $showingAddWorkoutSheet) {
-//                AddWorkoutView() // Apresenta a tela de adicionar como sheet
-//            }
-//            .onAppear {
-//                 // Poderia ter uma lógica de refresh aqui se necessário
-//            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    if store.isLoading {
+                        ProgressView()
+                    } else {
+                        Button {
+                            Task {
+                                await store.fetchWorkouts()
+                            }
+                        } label: {
+                            Label("Recarregar", systemImage: "arrow.clockwise")
+                        }
+                    }
+                }
+            }
+            .sheet(isPresented: $showingAddWorkoutSheet) {
+                AddWorkoutView()
+            }
+            .alert("Erro", isPresented: .constant(store.errorMessage != nil), actions: {
+                Button("OK", role: .cancel) { store.errorMessage = nil }
+            }, message: {
+                Text(store.errorMessage ?? "Ocorreu um erro desconhecido.")
+            })
         }
+        .navigationViewStyle(.stack)
     }
 
     private var upcomingWorkoutsSection: some View {
@@ -45,7 +58,10 @@ struct TodayView: View {
                 .fontWeight(.semibold)
                 .padding(.bottom, 5)
 
-            let upcoming = store.workouts.filter { $0.date > Date() && !Calendar.current.isDateInToday($0.date) }.prefix(3)
+            let upcoming = store.workouts
+                .filter { $0.date > Date() && !Calendar.current.isDateInToday($0.date) }
+                .sorted { $0.date < $1.date }
+                .prefix(3)
 
             if upcoming.isEmpty {
                 Text("Nenhum treino agendado para os próximos dias.")
@@ -56,7 +72,9 @@ struct TodayView: View {
                     NavigationLink(destination: WorkoutDetailView(workout: workout)) {
                         MinimalWorkoutRow(workout: workout)
                     }
-                    Divider()
+                    if workout.id != upcoming.last?.id {
+                        Divider()
+                    }
                 }
             }
         }
@@ -104,6 +122,7 @@ struct WorkoutDetailCard: View {
                     .padding(.horizontal, 8)
                     .padding(.bottom, 8)
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color(.systemGray6))
             .cornerRadius(12)
             .shadow(radius: 3)
@@ -130,6 +149,7 @@ struct NoWorkoutView: View {
         .frame(maxWidth: .infinity)
         .background(Color(.systemGray6))
         .cornerRadius(12)
+        .shadow(radius: 3)
     }
 }
 
@@ -153,7 +173,6 @@ struct MinimalWorkoutRow: View {
     }
 }
 
-// Uma view simples para mostrar detalhes quando navegamos para um treino futuro
 struct WorkoutDetailView: View {
     let workout: Workout
 
@@ -167,9 +186,12 @@ struct WorkoutDetailView: View {
     }
 }
 
+
 #Preview {
-    let store = WorkoutStore() // Cria uma instância para o preview
-    // Adiciona um treino para hoje para testar o WorkoutDetailCard
-    // store.addWorkout(Workout(date: Date(), description: "Preview workout", type: .easyRun))
-    return TodayView().environmentObject(store)
+    let previewStores = WorkoutStore()
+     let mockWorkout = Workout(date: Date(), description: "Corrida leve de aquecimento.", type: .easyRun, durationMinutes: 30)
+    previewStores.workouts = [mockWorkout]
+    
+    return TodayView()
+        .environmentObject(previewStores)
 }

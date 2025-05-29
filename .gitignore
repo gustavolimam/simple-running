@@ -1,0 +1,15 @@
+# IDEs
+.cursor/*
+.idea/*
+.vscode/*
+
+# Xcode
+*.xcconfig
+
+# Swift Package Manager
+.swiftpm/*
+
+# Build
+build/*
+
+# Derived Data

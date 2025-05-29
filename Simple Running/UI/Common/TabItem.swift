@@ -10,7 +10,6 @@ import SwiftUI
 enum TabItem: Hashable, CaseIterable {
     case today
     case calendar
-    case add
 
     var systemImageName: String {
         switch self {
@@ -18,8 +17,6 @@ enum TabItem: Hashable, CaseIterable {
             return "sun.max.fill"
         case .calendar:
             return "calendar"
-        case .add:
-            return "plus.circle.fill"
         }
     }
 
@@ -29,8 +26,6 @@ enum TabItem: Hashable, CaseIterable {
             return "Hoje"
         case .calendar:
             return "Calendário"
-        case .add:
-            return "Adicionar"
         }
     }
 }

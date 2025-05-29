@@ -7,58 +7,58 @@
 
 import SwiftUI
 
-/// Uma view de container que gerencia a navegação por abas e exibe o conteúdo da aba selecionada.
 struct MainTabView<Content: View>: View {
     @Binding var selectedTab: TabItem
-    let content: (TabItem) -> Content // Closure para fornecer o conteúdo da view para cada aba
-
+    let content: (TabItem) -> Content
+    
     init(selectedTab: Binding<TabItem>, @ViewBuilder content: @escaping (TabItem) -> Content) {
         self._selectedTab = selectedTab
         self.content = content
     }
-
+    
     var body: some View {
         ZStack {
-            // Conteúdo da aba selecionada
             Group {
                 content(selectedTab)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(.systemBackground).ignoresSafeArea()) // Garante que o fundo da view da aba preencha
-
-            // TabBar customizada
+            .background(Color(.systemBackground).ignoresSafeArea())
+            
             VStack {
-                Spacer() // Empurra a TabBar para baixo
+                Spacer()
                 customTabBar
             }
         }
         .background(
             .ultraThinMaterial, in: RoundedRectangle(cornerRadius: 10)
         )
-        .ignoresSafeArea(.keyboard) // Para evitar que o teclado sobreponha a TabBar
+        .ignoresSafeArea(.keyboard)
     }
-
+    
     private var customTabBar: some View {
         HStack {
-            ForEach(TabItem.allCases, id: \.self) { tab in
+            Spacer(minLength: 0)
+            ForEach(TabItem.allCases.indices, id: \.self) { index in
+                let tab = TabItem.allCases[index]
                 TabBarButtonView(tabItem: tab, selectedTab: $selectedTab) {
                     selectedTab = tab
                 }
-                if tab != TabItem.allCases.last { // Adiciona Spacer exceto para o último item
-                    Spacer()
+                if index != TabItem.allCases.count - 1 {
+                    Spacer(minLength: 0)
                 }
             }
+            Spacer(minLength: 0)
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 12)
         .background(
             BlurView(style: .systemUltraThinMaterial)
-                .background(Color.white.opacity(0.15)) // Efeito de vidro sutil
+                .background(Color.white.opacity(0.15))
                 .clipShape(RoundedRectangle(cornerRadius: 36, style: .continuous))
                 .shadow(color: Color.black.opacity(0.15), radius: 12, x: 0, y: 4)
         )
-        .padding(.horizontal, 8) // Espaçamento nas laterais da TabBar
-        .padding(.bottom, 8)     // Espaçamento inferior para a safe area ou elementos abaixo
+        .padding(.horizontal, 8)
+        .padding(.bottom, 8)
     }
 }
 
@@ -75,7 +75,7 @@ struct MainTabView_Previews: PreviewProvider {
             }
         }
     }
-
+    
     static var previews: some View {
         StatefulPreviewWrapper(TabItem.today) { selection in
             MainTabView(selectedTab: selection) { tab in

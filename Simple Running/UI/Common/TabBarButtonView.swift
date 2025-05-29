@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-/// Um botão customizado para ser usado em uma `TabBar`.
 struct TabBarButtonView: View {
     let tabItem: TabItem
     @Binding var selectedTab: TabItem
@@ -43,7 +42,6 @@ struct TabBarButtonView_Previews: PreviewProvider {
             HStack {
                 TabBarButtonView(tabItem: .today, selectedTab: selection, action: { selection.wrappedValue = .today })
                 TabBarButtonView(tabItem: .calendar, selectedTab: selection, action: { selection.wrappedValue = .calendar })
-                TabBarButtonView(tabItem: .add, selectedTab: selection, action: { selection.wrappedValue = .add })
             }
             .padding()
             .background(Color.gray.opacity(0.2))
@@ -51,7 +49,6 @@ struct TabBarButtonView_Previews: PreviewProvider {
     }
 }
 
-// Helper para previews com @State/@Binding
 struct StatefulPreviewWrapper<Value, Content: View>: View {
     @State var value: Value
     var content: (Binding<Value>) -> Content

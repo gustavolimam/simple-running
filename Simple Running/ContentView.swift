@@ -12,9 +12,6 @@ struct ContentView: View {
                     TodayView()
                 case .calendar:
                     WorkoutCalendarView()
-// TODO: must add user permissions first
-//                case .add:
-//                    AddWorkoutView()
                 }
             }
         }

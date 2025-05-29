@@ -36,13 +36,13 @@ struct WorkoutDetailSectionView: View {
             Divider().padding(.leading)
             
             HStack {
-                Image(systemName: type.iconName) // Certifique-se que WorkoutType.iconName existe
+                Image(systemName: type.iconName)
                     .foregroundColor(.accentColor)
                 Text("Tipo de Treino")
                     .font(.callout)
                 Spacer()
                 Picker("", selection: $type) {
-                    ForEach(WorkoutType.allCases) { workoutType in // Certifique-se que WorkoutType.allCases existe
+                    ForEach(WorkoutType.allCases) { workoutType in
                         Text(workoutType.rawValue).tag(workoutType)
                     }
                 }
@@ -62,7 +62,7 @@ struct WorkoutDetailSectionView: View {
                 }
                 TextEditor(text: $description)
                     .frame(height: 100)
-                    .background(Color(UIColor.systemBackground)) // Use Color(.systemBackground) para consistência
+                    .background(Color(UIColor.systemBackground))
                     .cornerRadius(8)
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)

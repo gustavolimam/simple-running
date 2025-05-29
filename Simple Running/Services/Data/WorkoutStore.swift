@@ -48,16 +48,11 @@ class WorkoutStore: ObservableObject {
         errorMessage = nil
         
         var workoutToAdd = workoutData
-        // if let currentUserId = supabase.auth.currentUser?.id {
-        //     workoutToAdd.userId = currentUserId
-        // }
-
         do {
-            // 'returning: .representation' é um parâmetro do método 'insert'
             let newWorkout: Workout = try await supabase
                 .from(tableName)
-                .insert(workoutToAdd, returning: .representation) // CORRIGIDO AQUI
-                .single() // Espera um único resultado após a inserção com 'returning'
+                .insert(workoutToAdd, returning: .representation)
+                .single()
                 .execute()
                 .value
             
@@ -78,12 +73,11 @@ class WorkoutStore: ObservableObject {
         errorMessage = nil
         
         do {
-            // 'returning: .representation' é um parâmetro do método 'update'
             let updatedWorkout: Workout = try await supabase
                 .from(tableName)
-                .update(workout, returning: .representation) // CORRIGIDO AQUI
-                .eq("id", value: workout.id.uuidString) // Filtro aplicado APÓS 'update'
-                .single() // Espera um único resultado após a atualização com 'returning'
+                .update(workout, returning: .representation)
+                .eq("id", value: workout.id.uuidString)
+                .single()
                 .execute()
                 .value
             
@@ -110,7 +104,7 @@ class WorkoutStore: ObservableObject {
                 .from(tableName)
                 .delete()
                 .eq("id", value: workout.id.uuidString)
-                .execute() // Para delete, geralmente não se espera um valor de retorno complexo
+                .execute()
             
             workouts.removeAll { $0.id == workout.id }
             print("Successfully deleted workout: \(workout.id)")

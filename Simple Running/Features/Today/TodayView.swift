@@ -25,13 +25,6 @@ struct TodayView: View {
             }
             .navigationTitle("Treino de Hoje")
             .toolbar {
-//                ToolbarItem(placement: .navigationBarTrailing) {
-//                    Button {
-//                        showingAddWorkoutSheet = true
-//                    } label: {
-//                        Label("Adicionar Treino", systemImage: "plus.circle.fill")
-//                    }
-//                }
                 ToolbarItem(placement: .navigationBarLeading) {
                     if store.isLoading {
                         ProgressView()
@@ -48,13 +41,6 @@ struct TodayView: View {
             }
             .sheet(isPresented: $showingAddWorkoutSheet) {
                 AddWorkoutView()
-            }
-            .onAppear {
-                // Data is fetched by WorkoutStore's init.
-                // If you want to refresh every time the view appears:
-                // Task {
-                //    await store.fetchWorkouts()
-                // }
             }
             .alert("Erro", isPresented: .constant(store.errorMessage != nil), actions: {
                 Button("OK", role: .cancel) { store.errorMessage = nil }

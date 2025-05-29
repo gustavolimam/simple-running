@@ -1,17 +1,62 @@
 import Foundation
 import Supabase
 
-class SupabaseClientManager {
+struct SupabaseClientManager {
     static let shared = SupabaseClientManager()
-
-    private init() {}
-        let client = SupabaseClient(
-            supabaseURL: URL(string:"https://zuqtrlwvzchqhlmxaavv.supabase.co")!,
-            supabaseKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1cXRybHd2emNocWhsbXhhYXZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcyNDgxNjgsImV4cCI6MjA2MjgyNDE2OH0.0I6yJzNXI2N-kKWzPJSLzHVLgE0fqJStsySx67g7BFA"
-        )
+    let client: SupabaseClient
     
-    func fetchData() async throws {
-        let response = try await client.from("workouts").select("*").execute()
-        print(response)
+    private init() {
+        guard let supabaseURL = URL(string: "https://zuqtrlwvzchqhlmxaavv.supabase.co") else {
+            fatalError("Supabase URL é inválida.")
+        }
+
+        let supabaseAnnonKey = ProcessInfo.processInfo.environment["SUPABASE_ANON_KEY"]
+        
+        let customDecoder = JSONDecoder()
+        customDecoder.dateDecodingStrategy = .custom { decoder throws -> Date in
+            let container = try decoder.singleValueContainer()
+            let dateString = try container.decode(String.self)
+            
+            let yyyyMMddFormatter: DateFormatter = {
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd"
+                formatter.calendar = Calendar(identifier: .iso8601)
+                formatter.timeZone = Calendar.current.timeZone
+                return formatter
+            }()
+            
+            if let date = yyyyMMddFormatter.date(from: dateString) {
+                return date
+            }
+            
+            let isoFormatter = ISO8601DateFormatter()
+            isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+            if let date = isoFormatter.date(from: dateString) {
+                return date
+            }
+            
+            isoFormatter.formatOptions = [.withInternetDateTime]
+            if let date = isoFormatter.date(from: dateString) {
+                return date
+            }
+            
+            throw DecodingError.dataCorruptedError(in: container,
+                                                   debugDescription: "A string de data '\(dateString)' não corresponde a um formato conhecido.")
+        }
+        
+        let defaultEncoder = JSONEncoder()
+        defaultEncoder.dateEncodingStrategy = .iso8601
+        
+        self.client = SupabaseClient(
+            supabaseURL: supabaseURL,
+            supabaseKey: supabaseAnnonKey!,
+            options: SupabaseClientOptions(
+                db: SupabaseClientOptions.DatabaseOptions(
+                    encoder: defaultEncoder,
+                    decoder: customDecoder,
+                ),
+            )
+        )
+        print("SupabaseClient inicializado com sucesso.")
     }
 }

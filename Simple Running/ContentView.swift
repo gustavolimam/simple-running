@@ -1,37 +1,19 @@
-//
-//  ContentView.swift
-//  Simple Running
-//
-//  Created by Gustavo Monteiro on 14/05/25.
-//
-
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var store = WorkoutStore()
+    @EnvironmentObject var store: WorkoutStore
     @State private var selectedTab: TabItem = .today
     
     var body: some View {
         ZStack {
-            Circle()
-                .frame(width: 300)
-                .foregroundColor(.red)
-                .blur(radius: 10)
-                .offset(x: -200, y: -200)
-            
-            Circle()
-                .frame(width: 300)
-                .foregroundColor(.cyan)
-                .blur(radius: 10)
-                .offset(x: 230, y: 180)
             MainTabView(selectedTab: $selectedTab) { tab in
                 switch tab {
                 case .today:
-                    TodayView().environmentObject(store)
+                    TodayView()
                 case .calendar:
-                    WorkoutCalendarView().environmentObject(store)
+                    WorkoutCalendarView()
                 case .add:
-                    AddWorkoutView().environmentObject(store)
+                    AddWorkoutView()
                 }
             }
         }
@@ -40,4 +22,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .environmentObject(WorkoutStore())
 }

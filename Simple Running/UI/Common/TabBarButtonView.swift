@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-/// Um botão customizado para ser usado em uma `TabBar`.
 struct TabBarButtonView: View {
     let tabItem: TabItem
     @Binding var selectedTab: TabItem
@@ -51,7 +50,6 @@ struct TabBarButtonView_Previews: PreviewProvider {
     }
 }
 
-// Helper para previews com @State/@Binding
 struct StatefulPreviewWrapper<Value, Content: View>: View {
     @State var value: Value
     var content: (Binding<Value>) -> Content

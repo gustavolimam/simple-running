@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-/// Uma view que aplica um efeito de desfoque de material visual usando UIVisualEffectView.
 struct BlurView: UIViewRepresentable {
     var style: UIBlurEffect.Style
 
@@ -23,7 +22,7 @@ struct BlurView: UIViewRepresentable {
 struct BlurView_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            Image(systemName: "photo.fill") // Imagem de fundo para ver o efeito de desfoque
+            Image(systemName: "photo.fill")
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()

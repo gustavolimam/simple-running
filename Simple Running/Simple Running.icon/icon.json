@@ -1,0 +1,37 @@
+{
+  "fill-specializations" : [
+    {
+      "value" : {
+        "solid" : "extended-gray:0.75000,1.00000"
+      }
+    },
+    {
+      "appearance" : "dark",
+      "value" : "automatic"
+    }
+  ],
+  "groups" : [
+    {
+      "layers" : [
+        {
+          "image-name" : "running man.png",
+          "name" : "running man"
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}

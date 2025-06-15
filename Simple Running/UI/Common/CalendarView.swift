@@ -4,14 +4,14 @@ struct CalendarView<DateView: View>: View {
     let interval: DateInterval
     @Binding var monthToDisplay: Date
     let content: (Date) -> DateView
-
+    
     private var calendar: Calendar
     private var daysOfWeek: [String]
-
+    
     private var currentGridDays: [Date] {
         Self.generateDaysInMonthGrid(for: monthToDisplay.startOfMonth(), calendar: calendar)
     }
-
+    
     init(
         interval: DateInterval,
         monthToDisplay: Binding<Date>,
@@ -29,10 +29,10 @@ struct CalendarView<DateView: View>: View {
         }
         self.daysOfWeek = symbols
     }
-
+    
     var body: some View {
         let columns = Array(repeating: GridItem(.flexible()), count: 7)
-
+        
         VStack {
             LazyVGrid(columns: columns, spacing: 10) {
                 ForEach(daysOfWeek, id: \.self) { daySymbol in
@@ -44,7 +44,7 @@ struct CalendarView<DateView: View>: View {
                 }
             }
             .padding(.bottom, 5)
-
+            
             LazyVGrid(columns: columns, spacing: 5) {
                 ForEach(currentGridDays, id: \.self) { date in
                     content(date)
@@ -53,7 +53,7 @@ struct CalendarView<DateView: View>: View {
             }
         }
     }
-
+    
     static func generateDaysInMonthGrid(for displayDateInMonth: Date, calendar: Calendar) -> [Date] {
         let firstOfMonth = displayDateInMonth.startOfMonth()
         let firstOfMonthWeekday = calendar.component(.weekday, from: firstOfMonth)
@@ -66,7 +66,7 @@ struct CalendarView<DateView: View>: View {
         guard let gridActualStartDate = calendar.date(byAdding: .day, value: -daysToSubtract, to: firstOfMonth) else {
             return []
         }
-
+        
         var finalDays: [Date] = []
         for dayOffset in 0..<(6 * 7) {
             if let date = calendar.date(byAdding: .day, value: dayOffset, to: gridActualStartDate) {

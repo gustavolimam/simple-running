@@ -113,7 +113,7 @@ struct MonthYearPicker: View {
                 if let newDate = Calendar.current.date(from: components), range.contains(newDate.startOfMonth()) {
                     self.date = newDate
                 } else {
-                    var adjustedComponents = DateComponents(year: newYear, month: 1, day: 1)
+                    let adjustedComponents = DateComponents(year: newYear, month: 1, day: 1)
                     if let adjustedDate = Calendar.current.date(from: adjustedComponents) {
                         if adjustedDate < range.lowerBound { self.date = range.lowerBound }
                         else if adjustedDate.endOfMonth() > range.upperBound { self.date = range.upperBound.startOfMonth() }

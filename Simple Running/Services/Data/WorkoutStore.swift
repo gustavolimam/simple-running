@@ -6,7 +6,7 @@ class WorkoutStore: ObservableObject {
     @Published var workouts: [Workout] = []
     @Published var isLoading: Bool = false
     @Published var errorMessage: String? = nil
-        
+    
     private let supabase = SupabaseClientManager.shared.client
     private let tableName = "workouts"
     
@@ -28,10 +28,10 @@ class WorkoutStore: ObservableObject {
             let fetchedWorkouts: [Workout] = try await supabase
                 .from(tableName)
                 .select()
-                .order("date", ascending: false)                
+                .order("date", ascending: false)
                 .execute()
                 .value
-
+            
             self.workouts = fetchedWorkouts
             print("Successfully fetched \(fetchedWorkouts.count) workouts.")
         } catch {
@@ -47,7 +47,7 @@ class WorkoutStore: ObservableObject {
         isLoading = true
         errorMessage = nil
         
-        var workoutToAdd = workoutData
+        let workoutToAdd = workoutData
         do {
             let newWorkout: Workout = try await supabase
                 .from(tableName)

@@ -7,7 +7,7 @@ struct Simple_RunningApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(workoutStore)
+                .environmentObject(workoutStore)                
         }
     }
 }

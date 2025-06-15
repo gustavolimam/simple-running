@@ -2,18 +2,20 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var store: WorkoutStore
-    @State private var selectedTab: TabItem = .today
+    @State private var selectedTab: Tab = .today
     
     var body: some View {
-        ZStack {
-            MainTabView(selectedTab: $selectedTab) { tab in
-                switch tab {
-                case .today:
-                    TodayView()
-                case .calendar:
-                    WorkoutCalendarView()
+        TabView(selection: $selectedTab) {
+            TodayView(store:store)
+                .tabItem {
+                    Label("Hoje", systemImage: "clock")
                 }
-            }
+                .tag(Tab.today)
+            WorkoutCalendarView()
+                .tabItem {
+                    Label("Calendário", systemImage: "calendar")
+                }
+                .tag(Tab.calendar)
         }
     }
 }
@@ -22,3 +24,4 @@ struct ContentView: View {
     ContentView()
         .environmentObject(WorkoutStore())
 }
+

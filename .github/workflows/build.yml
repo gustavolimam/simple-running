@@ -1,0 +1,16 @@
+name: Build
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build App
+        run: |
+          xcodebuild -project "Simple Running.xcodeproj" -scheme "Simple Running" -destination 'generic/platform=iOS Simulator' build

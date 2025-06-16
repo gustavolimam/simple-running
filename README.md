@@ -22,3 +22,7 @@ Simple Running is an iOS app designed to help you organize and track your runnin
 ---
 
 Feel free to contribute or suggest improvements!
+
+## Continuous Integration
+
+This project uses GitHub Actions to automatically build the app whenever code is pushed or a pull request is opened. The workflow located at `.github/workflows/build.yml` compiles the project using `xcodebuild` to ensure that it builds correctly on macOS.
